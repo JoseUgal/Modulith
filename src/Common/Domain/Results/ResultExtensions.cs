@@ -33,7 +33,7 @@ public static class ResultExtensions
     /// <returns>The mapped result.</returns>
     public static async Task<Result<TOut>> Map<TOut>(this Task<Result> resultTask, Func<TOut> func)
     {
-        var result = await resultTask;
+        Result result = await resultTask;
 
         return result.Map(func);
     }
@@ -66,7 +66,7 @@ public static class ResultExtensions
     /// <returns>The mapped result.</returns>
     public static async Task<Result<TOut>> Map<TIn, TOut>(this Task<Result<TIn>> resultTask, Func<TIn, TOut> func)
     {
-        var result = await resultTask;
+        Result<TIn> result = await resultTask;
 
         return result.Map(func);
     }
@@ -97,7 +97,7 @@ public static class ResultExtensions
     /// <returns>The mapped result.</returns>
     public static async Task<Result<TIn>> MapFailure<TIn>(this Task<Result<TIn>> resultTask, Func<Error> func)
     {
-        var result = await resultTask;
+        Result<TIn> result = await resultTask;
 
         return result.MapFailure(func);
     }
@@ -128,7 +128,7 @@ public static class ResultExtensions
     /// <returns>The bound result.</returns>
     public static async Task<Result> Then<TIn>(this Task<Result<TIn>> resultTask, Func<TIn, Result> func)
     {
-        var result = await resultTask;
+        Result<TIn> result = await resultTask;
 
         return result.Then(func);
     }
@@ -217,7 +217,7 @@ public static class ResultExtensions
         Result<TOut>> func
     )
     {
-        var result = await resultTask;
+        Result<TIn> result = await resultTask;
 
         return result.Then(func);
     }
@@ -232,7 +232,7 @@ public static class ResultExtensions
     /// <returns>The bound result.</returns>
     public static async Task<Result<TOut>> Then<TIn, TOut>(this Task<Result<TIn>> resultTask, Func<TIn, Task<Result<TOut>>> func)
     {
-        var result = await resultTask;
+        Result<TIn> result = await resultTask;
 
         return await result.Then(func);
     }
@@ -261,7 +261,7 @@ public static class ResultExtensions
     /// <returns>The same result.</returns>
     public static async Task<Result> OnSuccess(this Task<Result> resultTask, Func<Task> func)
     {
-        var result = await resultTask;
+        Result result = await resultTask;
 
         return await result.OnSuccess(func);
     }
@@ -292,7 +292,7 @@ public static class ResultExtensions
     /// <returns>The same result.</returns>
     public static async Task<Result<TIn>> OnSuccess<TIn>(this Task<Result<TIn>> resultTask, Func<Task> func)
     {
-        var result = await resultTask;
+        Result<TIn> result = await resultTask;
 
         return await result.OnSuccess(func);
     }
@@ -306,7 +306,7 @@ public static class ResultExtensions
     /// <returns>The same result.</returns>
     public static async Task<Result<TIn>> OnSuccess<TIn>(this Task<Result<TIn>> resultTask, Action<TIn> action)
     {
-        var result = await resultTask;
+        Result<TIn> result = await resultTask;
 
         return result.OnSuccess(action);
     }

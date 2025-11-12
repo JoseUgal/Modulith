@@ -9,10 +9,9 @@ public sealed record ValidationError : Error
     /// Initializes a new instance of <see cref="ValidationError"/> with one or more errors.
     /// </summary>
     /// <param name="errors">The errors to include in the validation error.</param>
-    public ValidationError(params Error[] errors) : base(ErrorCodes.ValidationGeneral, "One or more validation errors occurred", ErrorType.Validation)
-    {
-        Errors = errors;
-    }
+    public ValidationError(params Error[] errors) 
+        : base(ErrorCodes.ValidationGeneral, "One or more validation errors occurred", ErrorType.Validation) 
+        => Errors = errors;
 
     /// <summary>
     /// Gets the collection of validation errors.
@@ -36,7 +35,7 @@ public sealed record ValidationError : Error
             return this;
         }
 
-        var combined = Errors.Concat(additionalErrors).ToArray();
+        Error[] combined = Errors.Concat(additionalErrors).ToArray();
 
         return new ValidationError(combined);
     }

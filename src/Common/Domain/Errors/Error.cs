@@ -69,7 +69,10 @@ public record Error(string Code, string Description, ErrorType Type)
     /// <returns><c>true</c> if the errors have the same <see cref="Code"/> and <see cref="Type"/>; otherwise, <c>false</c>.</returns>
     public virtual bool Equals(Error? other)
     {
-        if (other is null) return false;
+        if (other is null)
+        {
+            return false;
+        }
 
         return Code == other.Code && Type == other.Type;
     }

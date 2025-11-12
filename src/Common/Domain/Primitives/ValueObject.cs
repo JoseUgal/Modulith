@@ -39,7 +39,7 @@ public abstract class ValueObject : IEquatable<ValueObject>
     {
         var hash = new HashCode();
 
-        foreach (var value in GetAtomicValues())
+        foreach (object value in GetAtomicValues())
         {
             hash.Add(value);
         }

@@ -13,10 +13,7 @@ public abstract class Entity<TEntityId> : IEquatable<Entity<TEntityId>>, IEntity
     /// </summary>
     /// <param name="id">The unique identifier of the entity. Cannot be null.</param>
     /// <exception cref="ArgumentException">Thrown when <paramref name="id"/> is null.</exception>
-    protected Entity(TEntityId id) : this()
-    {
-        Id = id ?? throw new ArgumentException("The entity identifier is required.", nameof(id));
-    }
+    protected Entity(TEntityId id) : this() => Id = id ?? throw new ArgumentException("The entity identifier is required.", nameof(id));
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Entity{TEntityId}"/> class.

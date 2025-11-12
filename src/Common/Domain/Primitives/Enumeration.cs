@@ -118,19 +118,15 @@ public abstract class Enumeration<TEnum> : IEquatable<Enumeration<TEnum>> where 
     /// <inheritdoc />
     public override int GetHashCode() => Id.GetHashCode();
 
-    private static Dictionary<int, TEnum> CreateEnumerationDictionary(Type enumType)
-    {
-        return GetFieldsForType(enumType).ToDictionary(t => t.Id);
-    }
+    private static Dictionary<int, TEnum> CreateEnumerationDictionary(Type enumType) => 
+        GetFieldsForType(enumType).ToDictionary(t => t.Id);
 
-    private static IEnumerable<TEnum> GetFieldsForType(Type enumType)
-    {
-        return enumType
+    private static IEnumerable<TEnum> GetFieldsForType(Type enumType) =>
+        enumType
             .GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
             .Where(fieldInfo =>
                 enumType.IsAssignableFrom(fieldInfo.FieldType)
             ).Select(fieldInfo =>
                 (TEnum)fieldInfo.GetValue(null)!
             );
-    }
 }
