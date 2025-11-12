@@ -48,7 +48,7 @@ public static class ResultExtensions
     /// <returns>The mapped result.</returns>
     public static Result<TOut> Map<TIn, TOut>(this Result<TIn> result, Func<TIn, TOut> func)
     {
-        if (result.IsSuccess)
+        if (result.IsFailure)
         {
             return func(result.Value);
         }
@@ -80,12 +80,14 @@ public static class ResultExtensions
     /// <returns>The mapped result.</returns>
     public static Result<TIn> MapFailure<TIn>(this Result<TIn> result, Func<Error> func)
     {
-        if (result.IsSuccess)
+        if (result.IsFailure)
         {
-            return result;
+            Error error = func();
+
+            return Result.Failure<TIn>(error);
         }
 
-        return Result.Failure<TIn>(func());
+        return result;
     }
 
     /// <summary>
@@ -109,9 +111,9 @@ public static class ResultExtensions
     /// <param name="result">The result.</param>
     /// <param name="func">The binding function.</param>
     /// <returns>The bound result.</returns>
-    public static Result Then<TIn>(this Result<TIn> result, Func<TIn, Result> func)
+    public static Result Bind<TIn>(this Result<TIn> result, Func<TIn, Result> func)
     {
-        if (result.IsSuccess)
+        if (result.IsFailure)
         {
             return func(result.Value);
         }
@@ -126,11 +128,11 @@ public static class ResultExtensions
     /// <param name="resultTask">The result task.</param>
     /// <param name="func">The binding function.</param>
     /// <returns>The bound result.</returns>
-    public static async Task<Result> Then<TIn>(this Task<Result<TIn>> resultTask, Func<TIn, Result> func)
+    public static async Task<Result> Bind<TIn>(this Task<Result<TIn>> resultTask, Func<TIn, Result> func)
     {
         Result<TIn> result = await resultTask;
 
-        return result.Then(func);
+        return result.Bind(func);
     }
 
     /// <summary>
@@ -140,7 +142,7 @@ public static class ResultExtensions
     /// <param name="result">The result.</param>
     /// <param name="func">The binding function.</param>
     /// <returns>The bound result.</returns>
-    public static async Task<Result> Then<TIn>(this Result<TIn> result, Func<TIn, Task<Result>> func)
+    public static async Task<Result> Bind<TIn>(this Result<TIn> result, Func<TIn, Task<Result>> func)
     {
         if (result.IsSuccess)
         {
@@ -158,7 +160,7 @@ public static class ResultExtensions
     /// <param name="result">The result.</param>
     /// <param name="func">The binding function.</param>
     /// <returns>The bound result.</returns>
-    public static Result<TOut> Then<TIn, TOut>(this Result<TIn> result, Func<TIn, Result<TOut>> func)
+    public static Result<TOut> Bind<TIn, TOut>(this Result<TIn> result, Func<TIn, Result<TOut>> func)
     {
         if (result.IsSuccess)
         {
@@ -176,7 +178,7 @@ public static class ResultExtensions
     /// <param name="result">The result.</param>
     /// <param name="func">The binding function.</param>
     /// <returns>The bound result.</returns>
-    public static async Task<Result<TOut>> Then<TIn, TOut>(this Result<TIn> result, Func<TIn, Task<Result<TOut>>> func)
+    public static async Task<Result<TOut>> Bind<TIn, TOut>(this Result<TIn> result, Func<TIn, Task<Result<TOut>>> func)
     {
         if (result.IsSuccess)
         {
@@ -193,9 +195,9 @@ public static class ResultExtensions
     /// <param name="result">The result.</param>
     /// <param name="func">The binding function.</param>
     /// <returns>The bound result.</returns>
-    public static async Task<Result<TOut>> Then<TOut>(this Result result, Func<Task<Result<TOut>>> func)
+    public static async Task<Result<TOut>> Bind<TOut>(this Result result, Func<Task<Result<TOut>>> func)
     {
-        if (result.IsFailure)
+        if (result.IsSuccess)
         {
             return await func();
         }
@@ -211,15 +213,11 @@ public static class ResultExtensions
     /// <param name="resultTask">The result task.</param>
     /// <param name="func">The binding function.</param>
     /// <returns>The bound result.</returns>
-    public static async Task<Result<TOut>> Then<TIn, TOut>(
-        this Task<Result<TIn>> resultTask,
-        Func<TIn,
-        Result<TOut>> func
-    )
+    public static async Task<Result<TOut>> Bind<TIn, TOut>(this Task<Result<TIn>> resultTask, Func<TIn, Result<TOut>> func)
     {
         Result<TIn> result = await resultTask;
 
-        return result.Then(func);
+        return result.Bind(func);
     }
 
     /// <summary>
@@ -230,11 +228,11 @@ public static class ResultExtensions
     /// <param name="resultTask">The result task.</param>
     /// <param name="func">The binding function.</param>
     /// <returns>The bound result.</returns>
-    public static async Task<Result<TOut>> Then<TIn, TOut>(this Task<Result<TIn>> resultTask, Func<TIn, Task<Result<TOut>>> func)
+    public static async Task<Result<TOut>> Bind<TIn, TOut>(this Task<Result<TIn>> resultTask, Func<TIn, Task<Result<TOut>>> func)
     {
         Result<TIn> result = await resultTask;
 
-        return await result.Then(func);
+        return await result.Bind(func);
     }
 
     /// <summary>
@@ -243,7 +241,7 @@ public static class ResultExtensions
     /// <param name="result">The result.</param>
     /// <param name="func">The function.</param>
     /// <returns>The same result.</returns>
-    public static async Task<Result> OnSuccess(this Result result, Func<Task> func)
+    public static async Task<Result> Tap(this Result result, Func<Task> func)
     {
         if (result.IsSuccess)
         {
@@ -259,11 +257,11 @@ public static class ResultExtensions
     /// <param name="resultTask">The result task.</param>
     /// <param name="func">The function.</param>
     /// <returns>The same result.</returns>
-    public static async Task<Result> OnSuccess(this Task<Result> resultTask, Func<Task> func)
+    public static async Task<Result> Tap(this Task<Result> resultTask, Func<Task> func)
     {
         Result result = await resultTask;
 
-        return await result.OnSuccess(func);
+        return await result.Tap(func);
     }
 
     /// <summary>
@@ -273,7 +271,7 @@ public static class ResultExtensions
     /// <param name="result">The result.</param>
     /// <param name="action">The action.</param>
     /// <returns>The same result.</returns>
-    public static Result<TIn> OnSuccess<TIn>(this Result<TIn> result, Action<TIn> action)
+    public static Result<TIn> Tap<TIn>(this Result<TIn> result, Action<TIn> action)
     {
         if (result.IsSuccess)
         {
@@ -290,11 +288,11 @@ public static class ResultExtensions
     /// <param name="resultTask">The result task.</param>
     /// <param name="func">The function.</param>
     /// <returns>The same result.</returns>
-    public static async Task<Result<TIn>> OnSuccess<TIn>(this Task<Result<TIn>> resultTask, Func<Task> func)
+    public static async Task<Result<TIn>> Tap<TIn>(this Task<Result<TIn>> resultTask, Func<Task> func)
     {
         Result<TIn> result = await resultTask;
 
-        return await result.OnSuccess(func);
+        return await result.Tap(func);
     }
 
     /// <summary>
@@ -304,11 +302,11 @@ public static class ResultExtensions
     /// <param name="resultTask">The result task.</param>
     /// <param name="action">The action.</param>
     /// <returns>The same result.</returns>
-    public static async Task<Result<TIn>> OnSuccess<TIn>(this Task<Result<TIn>> resultTask, Action<TIn> action)
+    public static async Task<Result<TIn>> Tap<TIn>(this Task<Result<TIn>> resultTask, Action<TIn> action)
     {
         Result<TIn> result = await resultTask;
 
-        return result.OnSuccess(action);
+        return result.Tap(action);
     }
 
     /// <summary>
@@ -318,7 +316,7 @@ public static class ResultExtensions
     /// <param name="result">The result.</param>
     /// <param name="func">The function.</param>
     /// <returns>The same result.</returns>
-    public static async Task<Result<TIn>> OnSuccess<TIn>(this Result<TIn> result, Func<Task> func)
+    public static async Task<Result<TIn>> Tap<TIn>(this Result<TIn> result, Func<Task> func)
     {
         if (result.IsSuccess)
         {
@@ -379,6 +377,13 @@ public static class ResultExtensions
             return result;
         }
 
-        return predicate(result.Value) ? result : Result.Failure<TIn>(Error.ConditionNotMet);
+        bool evaluation = predicate(result.Value);
+
+        if (!evaluation)
+        {
+            return Result.Failure<TIn>(Error.ConditionNotMet);
+        }
+
+        return result;
     }
 }
