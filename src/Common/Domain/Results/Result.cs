@@ -89,7 +89,10 @@ public class Result
     /// <typeparam name="TValue">The result type.</typeparam>
     /// <param name="value">The result value.</param>
     /// <returns>A new instance of <see cref="Result{TValue}"/> with the specified value or an error.</returns>
-    public static Result<TValue> Create<TValue>(TValue? value) => value is not null ? Success(value) : Failure<TValue>(Error.NullValue);
+    public static Result<TValue> Create<TValue>(TValue? value)
+    {
+        return value is not null ? Success(value) : Failure<TValue>(Error.NullValue);
+    }
 
     /// <summary>
     /// Returns the first failure from the specified <paramref name="results"/>.
