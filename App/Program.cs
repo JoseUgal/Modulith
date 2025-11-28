@@ -9,6 +9,11 @@ builder.Services.InstallServicesFromAssemblies(
     Infrastructure.AssemblyReference.Assembly
 );
 
+builder.Services.InstallModulesFromAssemblies(
+    builder.Configuration,
+    Modules.Users.Infrastructure.AssemblyReference.Assembly
+);
+
 WebApplication app = builder.Build();
 
 app.UseHttpsRedirection();
