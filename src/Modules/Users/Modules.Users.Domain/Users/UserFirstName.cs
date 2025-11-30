@@ -10,7 +10,7 @@ namespace Modules.Users.Domain.Users;
 /// <remarks>
 /// Leading and trailing spaces are trimmed to maintain consistency.
 /// </remarks>
-public class UserFirstName : ValueObject
+public sealed class UserFirstName : ValueObject
 {
     /// <summary>
     /// Gets the maximum allowed length.
@@ -21,7 +21,12 @@ public class UserFirstName : ValueObject
     /// Initializes a new instance of the <see cref="UserFirstName"/> class.
     /// </summary>
     /// <param name="value">The validated first name.</param>
-    private UserFirstName(string value) => Value = value;
+    /// <remarks>
+    /// This constructor is intended for EF Core and mapping purposes only.
+    /// It performs no validation. For domain-level creation and validation,
+    /// use <see cref="Create(string)"/> instead.
+    /// </remarks>
+    public UserFirstName(string value) => Value = value;
     
     /// <summary>
     /// Gets the value.

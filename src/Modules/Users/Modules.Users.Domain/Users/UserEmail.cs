@@ -23,7 +23,12 @@ public sealed class UserEmail : ValueObject
     /// Initializes a new instance of the <see cref="UserEmail"/> class.
     /// </summary>
     /// <param name="value">The validated value.</param>
-    private UserEmail(string value) => Value = value;
+    /// <remarks>
+    /// This constructor is intended for EF Core and mapping purposes only.
+    /// It performs no validation. For domain-level creation and validation,
+    /// use <see cref="Create(string)"/> instead.
+    /// </remarks>
+    public UserEmail(string value) => Value = value;
 
     /// <summary>
     /// Gets the value.

@@ -1,12 +1,13 @@
 namespace Application.Time;
 
 /// <summary>
-/// Provides access to the current UTC date and time.
+/// Represents the system time interface.
 /// </summary>
-public interface IDateTimeProvider
+public interface ISystemTime
 {
     /// <summary>
     /// Gets the current UTC date and time.
     /// </summary>
-    public DateTime UtcNow { get; }
+    DateTime UtcNow { get; }
 }
+

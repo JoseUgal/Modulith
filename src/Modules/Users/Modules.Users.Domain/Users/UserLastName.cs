@@ -21,7 +21,12 @@ public sealed class UserLastName : ValueObject
     /// Initializes a new instance of the <see cref="UserLastName"/> class.
     /// </summary>
     /// <param name="value">The value.</param>
-    private UserLastName(string value) => Value = value;
+    /// <remarks>
+    /// This constructor is intended for EF Core and mapping purposes only.
+    /// It performs no validation. For domain-level creation and validation,
+    /// use <see cref="Create(string)"/> instead.
+    /// </remarks>
+    public UserLastName(string value) => Value = value;
     
     /// <summary>
     /// Gets the value.
