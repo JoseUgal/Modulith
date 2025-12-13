@@ -5,7 +5,10 @@ internal static class UserRoutes
     internal const string Tag = "Users";
 
     internal const string BaseUri = "users";
+
+    internal const string ResourceId = "userId";
+
+    internal const string GetById = $"{BaseUri}/{{{ResourceId}:guid}}";
     
     internal const string Register = $"{BaseUri}/register";
-
 }

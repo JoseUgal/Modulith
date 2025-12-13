@@ -18,4 +18,12 @@ public interface IUserRepository
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The success result if the email is unique, otherwise a failure result.</returns>
     Task<bool> IsEmailUniqueAsync(UserEmail email, CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Gets the user with the specified identifier, if it exists.
+    /// </summary>
+    /// <param name="userId">The user identifier.</param>
+    /// <param name="cancellationToken">The canellation token.</param>
+    /// <returns>The user if exists, otherwise a nullable value.</returns>
+    Task<User?> GetByIdAsync(UserId userId, CancellationToken cancellationToken = default);
 }

@@ -44,10 +44,7 @@ internal sealed class RegisterUserCommandHandler(
         if (!await userRepository.IsEmailUniqueAsync(email, cancellationToken))
         {
             return Result.Failure<Guid>(
-                Error.Conflict(
-                    "User.EmailIsNotUnique",
-                    "The specified email is already in use."
-                )            
+                UserErrors.EmailIsNotUnique           
             );
         }
         
