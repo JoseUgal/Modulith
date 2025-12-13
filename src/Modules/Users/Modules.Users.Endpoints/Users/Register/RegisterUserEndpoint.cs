@@ -11,14 +11,14 @@ namespace Modules.Users.Endpoints.Users.Register;
 
 public sealed class RegisterUserEndpoint(ISender sender) : Endpoint
 {
-    [HttpPost("/users/register")]
+    [HttpPost(UserRoutes.Register)]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [SwaggerOperation(
         Summary = "Registers a new user.",
         Description = "Registers a new user based on the specified request.",
-        Tags = ["Users"]
+        Tags = [UserRoutes.Tag]
     )]
     public async Task<ActionResult<Guid>> HandleAsync(
         [FromBody] RegisterUserRequest request, 
