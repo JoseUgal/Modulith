@@ -1,4 +1,5 @@
 using Application.ServiceLifetimes;
+using Microsoft.EntityFrameworkCore;
 using Modules.Users.Domain.Users;
 
 namespace Modules.Users.Persistence.Repositories;
@@ -11,4 +12,13 @@ public sealed class UserRepository(UsersDbContext dbContext) : IUserRepository, 
 {
     /// <inheritdoc />
     public void Add(User user) => dbContext.Add(user);
+
+    /// <inheritdoc />
+    public async Task<bool> IsEmailUniqueAsync(UserEmail email, CancellationToken cancellationToken = default)
+    {
+        return !await dbContext.Set<User>().AnyAsync(user =>
+                user.Email == email,
+            cancellationToken
+        );
+    }
 }
