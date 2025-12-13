@@ -15,6 +15,10 @@ builder.Services.InstallModulesFromAssemblies(
 
 WebApplication app = builder.Build();
 
+app.UseSwagger();
+
+app.UseSwaggerUI();
+
 app.UseHttpsRedirection();
 
 app.MapControllers();
