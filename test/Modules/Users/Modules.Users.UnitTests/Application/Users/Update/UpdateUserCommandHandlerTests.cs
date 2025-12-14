@@ -89,9 +89,7 @@ public sealed class UpdateUserCommandHandlerTests
 
         sut.SetupUserExists(user);
 
-        sut.UnitOfWorkMock.Setup(x => 
-            x.SaveChangesAsync(It.IsAny<CancellationToken>())
-        ).Returns(Task.CompletedTask);
+        sut.SetupSaveSucceeds();
 
         // Act
         Result result = await sut.Handler.Handle(command, CancellationToken.None);

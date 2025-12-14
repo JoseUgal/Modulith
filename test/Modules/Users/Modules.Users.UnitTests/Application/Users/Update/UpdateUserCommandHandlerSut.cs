@@ -44,6 +44,13 @@ internal sealed class UpdateUserCommandHandlerSut
         ).ReturnsAsync(user); 
     }
 
+    public void SetupSaveSucceeds()
+    {
+        UnitOfWorkMock.Setup(x =>
+            x.SaveChangesAsync(It.IsAny<CancellationToken>())    
+        ).Returns(Task.CompletedTask);
+    }
+
     public void VerifyDidNotSave()
     {
         UnitOfWorkMock.Verify(
