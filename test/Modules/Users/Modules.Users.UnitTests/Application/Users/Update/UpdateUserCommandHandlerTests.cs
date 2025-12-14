@@ -1,6 +1,7 @@
 using Domain.Results;
 using Modules.Users.Application.Users.Update;
 using Modules.Users.Domain.Users;
+using Modules.Users.UnitTests.Common.Mothers;
 using Moq;
 
 namespace Modules.Users.UnitTests.Application.Users.Update;
@@ -44,7 +45,7 @@ public sealed class UpdateUserCommandHandlerTests
 
         sut.UserRepositoryMock.Setup(x =>
             x.GetByIdAsync(It.IsAny<UserId>(), It.IsAny<CancellationToken>())
-        ).ReturnsAsync(sut.ValidUser(userId)); 
+        ).ReturnsAsync(UserMother.Create()); 
         
         // Act
         Result result = await sut.Handler.Handle(command, CancellationToken.None);
@@ -68,7 +69,7 @@ public sealed class UpdateUserCommandHandlerTests
 
         sut.UserRepositoryMock.Setup(x =>
             x.GetByIdAsync(It.IsAny<UserId>(), It.IsAny<CancellationToken>())
-        ).ReturnsAsync(sut.ValidUser(userId)); 
+        ).ReturnsAsync(UserMother.Create()); 
         
         // Act
         Result result = await sut.Handler.Handle(command, CancellationToken.None);
@@ -90,7 +91,7 @@ public sealed class UpdateUserCommandHandlerTests
 
         UpdateUserCommand command = sut.ValidCommand(userId) with { FirstName = "Juan", LastName = "Perez" };
 
-        User user = sut.ValidUser(userId);
+        User user = UserMother.Create();
 
         sut.UserRepositoryMock.Setup(x => 
                 x.GetByIdAsync(It.IsAny<UserId>(), It.IsAny<CancellationToken>())

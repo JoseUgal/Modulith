@@ -1,6 +1,7 @@
 using Domain.Results;
 using Modules.Users.Application.Users.GetById;
 using Modules.Users.Domain.Users;
+using Modules.Users.UnitTests.Common.Mothers;
 using Moq;
 
 namespace Modules.Users.UnitTests.Application.Users.GetById;
@@ -37,7 +38,7 @@ public sealed class GetUserByIdQueryHandlerTests
         // Arrange
         var sut = new GetUserByIdQueryHandlerSut();
 
-        User user = sut.ValidUser();
+        User user = UserMother.Create();
         
         GetUserByIdQuery query = sut.ValidQuery(user.Id.Value);
 

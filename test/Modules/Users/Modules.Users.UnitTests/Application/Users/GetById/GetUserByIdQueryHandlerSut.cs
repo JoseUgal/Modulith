@@ -28,14 +28,4 @@ internal sealed class GetUserByIdQueryHandlerSut
             Times.Once
         );
     }
-    
-    public User ValidUser()
-    {
-        UserId id = new(Guid.NewGuid());
-        UserFirstName firstName = UserFirstName.Create("Ana").Value;
-        UserLastName lastName = UserLastName.Create("García").Value;
-        UserEmail email = UserEmail.Create("ana@demo.com").Value;
-        
-        return new User(id, firstName, lastName, email, "HASH");
-    }
 }
