@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Modules.Users.Application.Users.Register;
+using Modules.Users.Endpoints.Users.GetById;
 using Swashbuckle.AspNetCore.Annotations;
 using Endpoint = Endpoints.Endpoint;
 
@@ -12,7 +13,7 @@ namespace Modules.Users.Endpoints.Users.Register;
 public sealed class RegisterUserEndpoint(ISender sender) : Endpoint
 {
     [HttpPost(UserRoutes.Register)]
-    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [SwaggerOperation(
@@ -34,6 +35,10 @@ public sealed class RegisterUserEndpoint(ISender sender) : Endpoint
         
         Result<Guid> result = await sender.Send(command, cancellationToken);
 
-        return result.IsFailure ? this.HandleFailure(result) : Ok(result.Value);
+        return result.IsFailure ? this.HandleFailure(result) : CreatedAtRoute(
+            nameof(GetUserByIdEndpoint), 
+            new { userId = result.Value }, 
+            result.Value
+        );
     }
 }
