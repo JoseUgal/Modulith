@@ -24,7 +24,7 @@ internal class PersistenceServiceInstaller : IServiceInstaller
         
         services.AddDbContext<UsersDbContext>((serviceProvider, options) =>
             {
-                ConnectionStringOptions connectionString = serviceProvider.GetService<IOptions<ConnectionStringOptions>>()!.Value;
+                ConnectionStringOptions connectionString = serviceProvider.GetRequiredService<IOptions<ConnectionStringOptions>>().Value;
 
                 options.UseNpgsql(connectionString, builder => 
                     builder.WithMigrationHistoryTableInSchema(Schemas.Users)
