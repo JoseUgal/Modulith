@@ -1,5 +1,4 @@
 using Application.Messaging;
-using Domain.Errors;
 using Domain.Results;
 using Modules.Users.Domain.Users;
 

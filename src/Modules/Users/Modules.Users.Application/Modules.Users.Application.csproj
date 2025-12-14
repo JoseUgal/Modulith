@@ -10,5 +10,11 @@
       <ProjectReference Include="..\..\..\Common\Application\Application.csproj" />
       <ProjectReference Include="..\Modules.Users.Domain\Modules.Users.Domain.csproj" />
     </ItemGroup>
+    
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>Modules.Users.UnitTests</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
 
 </Project>

@@ -1,5 +1,4 @@
 using System.Text.RegularExpressions;
-using Domain.Errors;
 using Domain.Primitives;
 using Domain.Results;
 
@@ -58,40 +57,28 @@ public sealed class UserPassword : ValueObject
         if (string.IsNullOrWhiteSpace(password))
         {
             return Result.Failure<UserPassword>(
-                Error.Failure(
-                    "User.Password.IsRequired",
-                    "The password cannot be null or empty."
-                )
+                UserErrors.Password.IsRequired
             );
         }
 
         if (password.Length < MinLength)
         {
             return Result.Failure<UserPassword>(
-                Error.Failure(
-                    "User.Password.TooShort",
-                    $"The password must be at least {MinLength} characters long."
-                )
+                UserErrors.Password.TooShort(MinLength)
             );
         }
 
         if (password.Length > MaxLength)
         {
             return Result.Failure<UserPassword>(
-                Error.Failure(
-                    "User.Password.TooLong",
-                    $"The password cannot be longer than {MaxLength} characters."
-                )
+                UserErrors.Password.TooLong(MaxLength)
             );
         }
 
         if (!HasRequiredComplexity(password))
         {
             return Result.Failure<UserPassword>(
-                Error.Failure(
-                    "User.Password.Weak",
-                    "The password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character."
-                )
+                UserErrors.Password.Weak
             );
         }
 

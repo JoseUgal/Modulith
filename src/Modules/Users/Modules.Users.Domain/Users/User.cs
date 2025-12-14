@@ -12,7 +12,7 @@ public sealed class User : Entity<UserId>
     /// <param name="lastName">The last name.</param>
     /// <param name="email">The email.</param>
     /// <param name="passwordHash">The password hash.</param>
-    private User(UserId id, UserFirstName firstName, UserLastName lastName, UserEmail email, string passwordHash) : base(id)
+    public User(UserId id, UserFirstName firstName, UserLastName lastName, UserEmail email, string passwordHash) : base(id)
     {
         FirstName = firstName;
         LastName = lastName;
