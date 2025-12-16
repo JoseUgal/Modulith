@@ -2,7 +2,6 @@ using Domain.Results;
 using Modules.Users.Application.Users.Update;
 using Modules.Users.Domain.Users;
 using Modules.Users.UnitTests.Common.Mothers;
-using Moq;
 
 namespace Modules.Users.UnitTests.Application.Users.Update;
 
