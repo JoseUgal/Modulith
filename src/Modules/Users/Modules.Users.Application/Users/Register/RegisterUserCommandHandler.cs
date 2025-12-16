@@ -38,15 +38,15 @@ internal sealed class RegisterUserCommandHandler(
         {
             return Result.Failure<Guid>(error);
         }
-
-        var user = User.Create(firstName, lastName, email, passwordHasher.Hash(password.Value));
-
+        
         if (!await userRepository.IsEmailUniqueAsync(email, cancellationToken))
         {
             return Result.Failure<Guid>(
-                UserErrors.EmailIsNotUnique           
+                UserErrors.Email.IsNotUnique           
             );
         }
+        
+        var user = User.Create(firstName, lastName, email, passwordHasher.Hash(password.Value));
         
         userRepository.Add(user);
         

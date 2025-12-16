@@ -51,10 +51,7 @@ public sealed partial class UserEmail : ValueObject
         if (string.IsNullOrWhiteSpace(email))
         {
             return Result.Failure<UserEmail>(
-                Error.Failure(
-                    "User.Email.IsRequired",
-                    "The user email cannot be null or empty."
-                )
+                UserErrors.Email.IsRequired
             );
         }
 
@@ -63,20 +60,14 @@ public sealed partial class UserEmail : ValueObject
         if (normalized.Length > MaxLength)
         {
             return Result.Failure<UserEmail>(
-                Error.Failure(
-                    "User.Email.TooLong",
-                    "The user email cannot be longer than " + MaxLength
-                )
+                UserErrors.Email.TooLong(MaxLength)
             );
         }
 
         if (!EmailRegex().IsMatch(normalized))
         {
             return Result.Failure<UserEmail>(
-                Error.Failure(
-                    "User.Email.InvalidFormat",
-                    "The user email must be a valid format."
-                )
+               UserErrors.Email.InvalidFormat
             );
         }
 

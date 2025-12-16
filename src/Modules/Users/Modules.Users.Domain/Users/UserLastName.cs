@@ -49,10 +49,7 @@ public sealed class UserLastName : ValueObject
         if (string.IsNullOrWhiteSpace(lastName))
         {
             return Result.Failure<UserLastName>(
-                Error.Failure(
-                    "User.LastName.IsRequired",
-                    "The user last name cannot be null or empty."
-                )
+                UserErrors.LastName.IsRequired
             );
         }
         
@@ -61,10 +58,7 @@ public sealed class UserLastName : ValueObject
         if (lastName.Length > MaxLength)
         {
             return Result.Failure<UserLastName>(
-                Error.Failure(
-                    "User.LastName.TooLong",
-                    "The user last name cannot be longer than " + MaxLength
-                )
+                UserErrors.LastName.TooLong(MaxLength)
             );
         }
 
