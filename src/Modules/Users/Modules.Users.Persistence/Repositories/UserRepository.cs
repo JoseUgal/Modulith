@@ -11,7 +11,7 @@ namespace Modules.Users.Persistence.Repositories;
 public sealed class UserRepository(UsersDbContext dbContext) : IUserRepository, IScoped
 {
     /// <inheritdoc />
-    public void Add(User user) => dbContext.Add(user);
+    public void Add(User user) => dbContext.Set<User>().Add(user);
 
     /// <inheritdoc />
     public async Task<bool> IsEmailUniqueAsync(UserEmail email, CancellationToken cancellationToken = default)

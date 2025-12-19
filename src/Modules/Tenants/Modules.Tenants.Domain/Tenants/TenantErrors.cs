@@ -35,6 +35,26 @@ public static class TenantErrors
             "Tenant.Name.IsRequired",
             "The tenant name cannot be null or empty."
         );
+        
+        /// <summary>
+        /// Indicates that the tenant's name is shorter than the minimum required length.
+        /// </summary>
+        /// <param name="minLength">
+        /// The minimum number of characters required for the tenant name.
+        /// </param>
+        public static Error TooShort(int minLength) => Error.Failure(
+            "Tenant.Name.TooShort",
+            $"The name must be at least {minLength} characters long."
+        );
+
+        /// <summary>
+        /// Indicates that the tenant's name exceeds the maximum allowed length.
+        /// </summary>
+        /// <param name="maxLength">The maximum allowed length for the tenant name.</param>
+        public static Error TooLong(int maxLength) => Error.Failure(
+            "Tenant.Name.TooLong",
+            $"The name cannot be longer than {maxLength} characters."
+        );
     }
 
     /// <summary>
@@ -51,11 +71,39 @@ public static class TenantErrors
         );
         
         /// <summary>
+        /// Indicates that the tenant's slug is invalid.
+        /// </summary>
+        public static Error IsInvalid => Error.Failure(
+            "Tenant.Slug.IsInvalid",
+            "The tenant slug does not match the required format."
+        );
+        
+        /// <summary>
         /// Indicates that the specified slug is already in use by another tenant.
         /// </summary>
         public static Error IsNotUnique => Error.Conflict(
             "Tenant.Slug.IsNotUnique", 
             "The specified slug is already in use."
+        );
+        
+        /// <summary>
+        /// Indicates that the tenant's slug is shorter than the minimum required length.
+        /// </summary>
+        /// <param name="minLength">
+        /// The minimum number of characters required for the tenant slug.
+        /// </param>
+        public static Error TooShort(int minLength) => Error.Failure(
+            "Tenant.Slug.TooShort",
+            $"The slug must be at least {minLength} characters long."
+        );
+
+        /// <summary>
+        /// Indicates that the tenant's name exceeds the maximum allowed length.
+        /// </summary>
+        /// <param name="maxLength">The maximum allowed length for the tenant slug.</param>
+        public static Error TooLong(int maxLength) => Error.Failure(
+            "Tenant.Slug.TooLong",
+            $"The slug cannot be longer than {maxLength} characters."
         );
     }
 }

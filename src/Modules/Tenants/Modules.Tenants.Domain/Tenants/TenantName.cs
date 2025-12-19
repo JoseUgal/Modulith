@@ -9,6 +9,16 @@ namespace Modules.Tenants.Domain.Tenants;
 public sealed class TenantName : ValueObject
 {
     /// <summary>
+    /// Gets the minimum allowed length.
+    /// </summary>
+    public const int MinLength = 2;
+    
+    /// <summary>
+    /// Gets the maximum allowed length.
+    /// </summary>
+    public const int MaxLength = 100;
+    
+    /// <summary>
     /// Creates a validated name.
     /// </summary>
     /// <param name="name">The name.</param>
@@ -22,6 +32,22 @@ public sealed class TenantName : ValueObject
         {
             return Result.Failure<TenantName>(
                 TenantErrors.Name.IsRequired
+            );
+        }
+        
+        name = name.Trim();
+
+        if (name.Length < MinLength)
+        {
+            return Result.Failure<TenantName>(
+                TenantErrors.Name.TooShort(MinLength)
+            );
+        }
+
+        if (name.Length > MaxLength)
+        {
+            return Result.Failure<TenantName>(
+                TenantErrors.Name.TooLong(MaxLength)
             );
         }
         

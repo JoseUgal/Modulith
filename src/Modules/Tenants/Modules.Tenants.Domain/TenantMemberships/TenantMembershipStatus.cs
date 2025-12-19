@@ -13,5 +13,10 @@ public enum TenantMembershipStatus
     /// <summary>
     /// The membership is active.
     /// </summary>
-    Active = 1
+    Active = 1,
+    
+    /// <summary>
+    /// The membership is removed.
+    /// </summary>
+    Removed = 2
 }

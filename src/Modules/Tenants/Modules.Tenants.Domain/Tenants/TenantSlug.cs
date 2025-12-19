@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Domain.Primitives;
 using Domain.Results;
 
@@ -8,6 +9,16 @@ namespace Modules.Tenants.Domain.Tenants;
 /// </summary>
 public sealed class TenantSlug : ValueObject
 {
+    /// <summary>
+    /// Gets the minimum allowed length.
+    /// </summary>
+    private const int MinLength = 2;
+    
+    /// <summary>
+    /// Gets the maximum allowed length.
+    /// </summary>
+    public const int MaxLength = 50;
+    
     /// <summary>
     /// Creates a validated slug.
     /// </summary>
@@ -26,6 +37,27 @@ public sealed class TenantSlug : ValueObject
         }
         
         string normalized = Normalize(slug);
+        
+        if (normalized.Length < MinLength)
+        {
+            return Result.Failure<TenantSlug>(
+                TenantErrors.Slug.TooShort(MinLength)
+            );
+        }
+
+        if (normalized.Length > MaxLength)
+        {
+            return Result.Failure<TenantSlug>(
+                TenantErrors.Slug.TooLong(MaxLength)
+            );
+        }
+        
+        if (!Pattern.IsMatch(normalized))
+        {
+            return Result.Failure<TenantSlug>(
+                TenantErrors.Slug.IsInvalid
+            );
+        }
         
         return new TenantSlug(normalized);
     }
@@ -47,6 +79,8 @@ public sealed class TenantSlug : ValueObject
     public string Value { get; }
 
     protected override IEnumerable<object> GetAtomicValues() => [Value];
-    
+
     private static string Normalize(string slug) => slug.Trim().ToLowerInvariant();
+    
+    private static readonly Regex Pattern = new(@"^[a-z0-9]+(?:-[a-z0-9]+)*$", RegexOptions.Compiled);
 }

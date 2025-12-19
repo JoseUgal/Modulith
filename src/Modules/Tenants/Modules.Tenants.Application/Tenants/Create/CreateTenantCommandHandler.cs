@@ -26,9 +26,7 @@ internal sealed class CreateTenantCommandHandler(ITenantRepository repository, I
 
         if (!await repository.IsSlugUniqueAsync(slug, cancellationToken))
         {
-            return Result.Failure<Guid>(
-                TenantErrors.Slug.IsNotUnique    
-            );
+            return Result.Failure<Guid>(TenantErrors.Slug.IsNotUnique);
         }
 
         Result<Tenant> tenant = Tenant.Create(name, slug, request.UserId);
