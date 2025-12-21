@@ -9,4 +9,6 @@ internal static class TenantRoutes
     internal const string ResourceId = "tenantId";
 
     internal const string Create = $"{BaseUri}";
+
+    internal const string GetMine = $"{BaseUri}/me";
 }

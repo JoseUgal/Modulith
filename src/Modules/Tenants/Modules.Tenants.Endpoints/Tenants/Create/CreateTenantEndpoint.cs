@@ -12,6 +12,7 @@ namespace Modules.Tenants.Endpoints.Tenants.Create;
 public sealed class CreateTenantEndpoint(ISender sender) : Endpoint
 {
     [HttpPost(TenantRoutes.Create)]
+    [ProducesResponseType(typeof(Guid),StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -23,7 +24,7 @@ public sealed class CreateTenantEndpoint(ISender sender) : Endpoint
     public async Task<ActionResult> HandleAsync(CreateTenantRequest request, CancellationToken cancellation)
     {
         // TODO: Gets the user identifier from CurrentUser.
-        Guid userId = Guid.Empty;
+        var userId = Guid.Parse("7c2fd1d9-db1c-443a-a7e9-f2d106d6a04e");
         
         var command = new CreateTenantCommand(
             userId,
@@ -33,6 +34,9 @@ public sealed class CreateTenantEndpoint(ISender sender) : Endpoint
         
         Result<Guid> result = await sender.Send(command, cancellation);
 
-        return result.IsFailure ? this.HandleFailure(result) : NoContent();
+        return result.IsFailure ? this.HandleFailure(result) : StatusCode(
+            StatusCodes.Status201Created,
+            result.Value
+        );
     }
 }
