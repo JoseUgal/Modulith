@@ -10,7 +10,8 @@ builder.Services.InstallServicesFromAssemblies(
 
 builder.Services.InstallModulesFromAssemblies(
     builder.Configuration,
-    Modules.Users.Infrastructure.AssemblyReference.Assembly
+    Modules.Users.Infrastructure.AssemblyReference.Assembly,
+    Modules.Tenants.Infrastructure.AssemblyReference.Assembly
 );
 
 WebApplication app = builder.Build();

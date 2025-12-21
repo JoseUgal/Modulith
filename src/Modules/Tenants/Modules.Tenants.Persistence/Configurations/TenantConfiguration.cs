@@ -55,11 +55,14 @@ internal sealed class TenantConfiguration : IEntityTypeConfiguration<Tenant>
     
     private static void ConfigureRelationships(EntityTypeBuilder<Tenant> builder)
     {
-        builder.HasMany<TenantMembership>("_memberships")
+        builder
+            .HasMany(x => x.Memberships)
             .WithOne()
             .HasForeignKey(x => x.TenantId)
             .OnDelete(DeleteBehavior.Cascade);
         
-        builder.Navigation("_memberships").UsePropertyAccessMode(PropertyAccessMode.Field);
+        builder
+            .Navigation(x => x.Memberships)
+            .UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 }

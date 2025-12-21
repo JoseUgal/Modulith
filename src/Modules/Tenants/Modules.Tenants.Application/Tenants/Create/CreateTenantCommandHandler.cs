@@ -12,14 +12,14 @@ namespace Modules.Tenants.Application.Tenants.Create;
 internal sealed class CreateTenantCommandHandler(ITenantRepository repository, IUnitOfWork unitOfWork) : ICommandHandler<CreateTenantCommand, Guid>
 {
     /// <inheritdoc />
-    public async Task<Result<Guid>> Handle(CreateTenantCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(CreateTenantCommand command, CancellationToken cancellationToken)
     {
-        if (!TenantName.Create(request.Name).TryGetValue(out TenantName name, out Error error))
+        if (!TenantName.Create(command.Name).TryGetValue(out TenantName name, out Error error))
         {
             return Result.Failure<Guid>(error);
         }
         
-        if (!TenantSlug.Create(request.Name).TryGetValue(out TenantSlug slug, out error))
+        if (!TenantSlug.Create(command.Slug).TryGetValue(out TenantSlug slug, out error))
         {
             return Result.Failure<Guid>(error);
         }
@@ -29,7 +29,7 @@ internal sealed class CreateTenantCommandHandler(ITenantRepository repository, I
             return Result.Failure<Guid>(TenantErrors.Slug.IsNotUnique);
         }
 
-        Result<Tenant> tenant = Tenant.Create(name, slug, request.UserId);
+        Result<Tenant> tenant = Tenant.Create(name, slug, command.UserId);
         
         repository.Add(tenant.Value);
 
