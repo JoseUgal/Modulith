@@ -22,7 +22,8 @@ public sealed class CreateTenantEndpoint(ISender sender) : Endpoint
     )]
     public async Task<ActionResult> HandleAsync(CreateTenantRequest request, CancellationToken cancellation)
     {
-        var userId = Guid.Parse("7c2fd1d9-db1c-443a-a7e9-f2d106d6a04e");
+        // TODO: Gets the user identifier from CurrentUser.
+        Guid userId = Guid.Empty;
         
         var command = new CreateTenantCommand(
             userId,
