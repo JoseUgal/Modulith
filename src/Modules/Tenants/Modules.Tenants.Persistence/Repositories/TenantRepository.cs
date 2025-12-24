@@ -1,5 +1,6 @@
 using Application.ServiceLifetimes;
 using Microsoft.EntityFrameworkCore;
+using Modules.Tenants.Domain.TenantMemberships;
 using Modules.Tenants.Domain.Tenants;
 
 namespace Modules.Tenants.Persistence.Repositories;
@@ -20,5 +21,13 @@ public sealed class TenantRepository(TenantsDbContext dbContext) : ITenantReposi
                 user.Slug == slug,
             cancellationToken
         );
+    }
+
+    /// <inheritdoc />
+    public async Task<TenantMembership[]> GetMembersAsync(TenantId tenantId, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.Set<TenantMembership>().Where(member =>
+            member.TenantId == tenantId
+        ).ToArrayAsync(cancellationToken);
     }
 }

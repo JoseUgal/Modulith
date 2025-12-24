@@ -1,3 +1,5 @@
+using Modules.Tenants.Domain.TenantMemberships;
+
 namespace Modules.Tenants.Domain.Tenants;
 
 /// <summary>
@@ -18,4 +20,12 @@ public interface ITenantRepository
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The success result if the slug is unique, otherwise a failure result.</returns>
     Task<bool> IsSlugUniqueAsync(TenantSlug slug, CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Gets the members of the specified tenant.
+    /// </summary>
+    /// <param name="tenantId">The tenant identifier.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The list of members.</returns>
+    Task<TenantMembership[]> GetMembersAsync(TenantId tenantId, CancellationToken cancellationToken = default);
 }
