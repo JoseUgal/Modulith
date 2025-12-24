@@ -28,4 +28,12 @@ public interface ITenantRepository
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The list of members.</returns>
     Task<TenantMembership[]> GetMembersAsync(TenantId tenantId, CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// Checks if the specified tenant exists.
+    /// </summary>
+    /// <param name="tenantId">The tenant identifier.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The success result if the tenant exists, otherwise a failure result.</returns>
+    Task<bool> ExistsAsync(TenantId tenantId, CancellationToken cancellationToken = default);
 }

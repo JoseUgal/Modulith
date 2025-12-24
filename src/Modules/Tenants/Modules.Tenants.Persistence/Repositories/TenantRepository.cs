@@ -18,7 +18,7 @@ public sealed class TenantRepository(TenantsDbContext dbContext) : ITenantReposi
     public async Task<bool> IsSlugUniqueAsync(TenantSlug slug, CancellationToken cancellationToken = default)
     {
         return !await dbContext.Set<Tenant>().AnyAsync(user =>
-                user.Slug == slug,
+            user.Slug == slug,
             cancellationToken
         );
     }
@@ -29,5 +29,14 @@ public sealed class TenantRepository(TenantsDbContext dbContext) : ITenantReposi
         return await dbContext.Set<TenantMembership>().Where(member =>
             member.TenantId == tenantId
         ).ToArrayAsync(cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public async Task<bool> ExistsAsync(TenantId tenantId, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.Set<Tenant>().AnyAsync(tenant => 
+            tenant.Id == tenantId, 
+            cancellationToken
+        );
     }
 }

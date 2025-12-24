@@ -14,6 +14,7 @@ public sealed class GetTenantMembersEndpoint(ISender sender) : Endpoint
 {
     [HttpGet(TenantRoutes.GetMembers, Name = nameof(GetTenantMembersEndpoint))]
     [ProducesResponseType(typeof(TenantResponse[]), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerOperation(
         Summary = "Get tenant members",
         Description = "Returns members for the given tenant.",

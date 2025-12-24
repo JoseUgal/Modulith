@@ -8,6 +8,15 @@ namespace Modules.Tenants.Domain.Tenants;
 public static class TenantErrors
 {
     /// <summary>
+    /// Indicates that a tenant with the specified identifier was not found.
+    /// </summary>
+    /// <param name="tenantId">The unique identifier of the tenant that could not be found.</param>
+    public static Error NotFound(TenantId tenantId) => Error.NotFound(
+        "Tenant.NotFound",
+        $"The tenant with the identifier '{tenantId.Value}' was not found."
+    );
+    
+    /// <summary>
     /// Indicates that the user is already a member of this tenant.
     /// </summary>
     public static Error MemberAlreadyExist => Error.Conflict(

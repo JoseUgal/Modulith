@@ -15,6 +15,13 @@ internal sealed class GetTenantMembersQueryHandler(ITenantRepository repository)
     {
         var tenantId = new TenantId(request.TenantId);
 
+        if (!await repository.ExistsAsync(tenantId, cancellationToken))
+        {
+            return Result.Failure<TenantMemberResponse[]>(
+                TenantErrors.NotFound(tenantId)
+            );
+        }
+
         TenantMembership[] members = await repository.GetMembersAsync(tenantId, cancellationToken);
 
         return members.Select(member => new TenantMemberResponse
