@@ -13,6 +13,8 @@ internal static class TenantRoutes
     internal const string Create = $"{BaseUri}";
 
     internal const string GetMine = $"{BaseUri}/me";
+    
+    internal const string GetById = $"{BaseUri}/{{{ResourceId}:guid}}";
 
     internal const string GetMembers = $"{BaseUri}/{{{ResourceId}:guid}}/members";
     

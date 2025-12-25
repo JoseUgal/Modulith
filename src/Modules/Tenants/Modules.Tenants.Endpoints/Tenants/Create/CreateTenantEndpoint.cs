@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Modules.Tenants.Application.Tenants.Create;
+using Modules.Tenants.Endpoints.Tenants.GetById;
 using Swashbuckle.AspNetCore.Annotations;
 using Endpoint = Endpoints.Endpoint;
 
@@ -34,8 +35,9 @@ public sealed class CreateTenantEndpoint(ISender sender) : Endpoint
         
         Result<Guid> result = await sender.Send(command, cancellation);
 
-        return result.IsFailure ? this.HandleFailure(result) : StatusCode(
-            StatusCodes.Status201Created,
+        return result.IsFailure ? this.HandleFailure(result) : CreatedAtRoute(
+            nameof(GetTenantByIdEndpoint),
+            new { tenantId = result.Value },
             result.Value
         );
     }
