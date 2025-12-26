@@ -12,7 +12,7 @@ public sealed class TenantSlug : ValueObject
     /// <summary>
     /// Gets the minimum allowed length.
     /// </summary>
-    private const int MinLength = 2;
+    public const int MinLength = 2;
     
     /// <summary>
     /// Gets the maximum allowed length.

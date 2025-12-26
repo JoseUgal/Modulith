@@ -2,9 +2,11 @@
 # Goals: enforce Clean Architecture + DDD boundaries, good API semantics, and maintainable module growth.
 
 reviews:
-  auto_review: true
+  auto_review:
+    enabled: true
+    drafts: false
+    
   review_level: thorough
-
   tone: concise
   comment_style: inline
 
