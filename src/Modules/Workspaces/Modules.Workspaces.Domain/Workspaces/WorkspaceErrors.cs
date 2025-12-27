@@ -8,6 +8,15 @@ namespace Modules.Workspaces.Domain.Workspaces;
 public static class WorkspaceErrors
 {
     /// <summary>
+    /// Indicates that a workspace with the specified identifier was not found.
+    /// </summary>
+    /// <param name="workspaceId">The unique identifier of the workspace that could not be found.</param>
+    public static Error NotFound(WorkspaceId workspaceId) => Error.NotFound(
+        "Workspace.NotFound",
+        $"The workspace with the identifier '{workspaceId.Value}' was not found."
+    );
+    
+    /// <summary>
     /// Indicates that the owner can only be added at workspace creation.
     /// </summary>
     public static Error OwnerAlreadyExist => Error.Conflict(

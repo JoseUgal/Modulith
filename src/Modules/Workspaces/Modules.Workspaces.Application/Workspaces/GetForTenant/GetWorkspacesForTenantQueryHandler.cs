@@ -15,9 +15,9 @@ internal class GetWorkspacesForTenantQueryHandler(ISqlQueryExecutor sqlQueryExec
         IEnumerable<WorkspaceResponse> responses = await sqlQueryExecutor.QueryAsync<WorkspaceResponse>(
             """
                 SELECT 
-                    ws.id, ws.name
-                FROM workspaces.workspaces AS ws
-                WHERE ws.tenant_id = @tenantId
+                    id, name
+                FROM workspaces.workspaces
+                WHERE tenant_id = @tenantId
             """,
             new { tenantId = query.TenantId }
         );
