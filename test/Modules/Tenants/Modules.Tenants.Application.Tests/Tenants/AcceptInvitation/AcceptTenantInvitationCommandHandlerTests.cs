@@ -100,7 +100,7 @@ public sealed class AcceptTenantInvitationCommandHandlerTests
 
         var userId = Guid.NewGuid();
 
-        Tenant tenant = TenantMother.CreateWithActivatedMemberships(
+        Tenant tenant = TenantMother.CreateWithInvitedMemberships(
             (userId, TenantRole.Member)
         );
         

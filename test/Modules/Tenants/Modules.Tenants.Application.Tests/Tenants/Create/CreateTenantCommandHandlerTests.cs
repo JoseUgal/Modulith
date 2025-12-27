@@ -45,7 +45,6 @@ public sealed class CreateTenantCommandHandlerTests
         Result<Guid> result = await sut.Handler.Handle(command, CancellationToken.None);
 
         // Assert
-        // Asser
         result.IsFailure.Should().BeTrue();
         result.Error.Type.Should().Be(ErrorType.Failure);
         
@@ -71,7 +70,6 @@ public sealed class CreateTenantCommandHandlerTests
         Result<Guid> result = await sut.Handler.Handle(command, CancellationToken.None);
 
         // Assert
-        // Asser
         result.IsFailure.Should().BeTrue();
         result.Error.Type.Should().Be(ErrorType.Conflict);
         
