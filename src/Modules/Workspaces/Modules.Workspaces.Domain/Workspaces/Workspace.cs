@@ -10,11 +10,18 @@ public sealed class Workspace : Entity<WorkspaceId>
     /// Initializes a new instance of the <see cref="Workspace"/> class.
     /// </summary>
     /// <param name="id">The identifier.</param>
+    /// <param name="tenantId">The tenant identifier.</param>
     /// <param name="name">The name.</param>
-    private Workspace(WorkspaceId id, WorkspaceName name) : base(id)
+    private Workspace(WorkspaceId id, Guid tenantId, WorkspaceName name) : base(id)
     {
+        TenantId = tenantId;
         Name = name;
     }
+    
+    /// <summary>
+    /// Gets the tenant identifier.
+    /// </summary>
+    public Guid TenantId { get; private set; }
     
     /// <summary>
     /// Gets the name.
@@ -35,11 +42,11 @@ public sealed class Workspace : Entity<WorkspaceId>
     /// The method generates a new <see cref="WorkspaceId"/> for the entity.
     /// All value objects should be validated in this method.
     /// </remarks>
-    public static Result<Workspace> Create(WorkspaceName name, Guid ownerId)
+    public static Result<Workspace> Create(Guid tenantId, WorkspaceName name, Guid ownerId)
     {
         var id = new WorkspaceId(Guid.NewGuid());
 
-        var workspace = new Workspace(id, name);
+        var workspace = new Workspace(id, tenantId, name);
 
         Result result = workspace.AddOwner(ownerId);
 

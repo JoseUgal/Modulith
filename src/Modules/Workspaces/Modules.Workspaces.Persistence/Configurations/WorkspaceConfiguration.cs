@@ -16,6 +16,8 @@ internal sealed class WorkspaceConfiguration : IEntityTypeConfiguration<Workspac
         ConfigureDataStructure(builder);
         
         ConfigureRelationships(builder);
+        
+        ConfigureIndexes(builder);
     }
 
     private static void ConfigureDataStructure(EntityTypeBuilder<Workspace> builder)
@@ -27,6 +29,9 @@ internal sealed class WorkspaceConfiguration : IEntityTypeConfiguration<Workspac
         builder.Property(x => x.Id)
             .ValueGeneratedNever()
             .HasConversion(x => x.Value, v => new WorkspaceId(v));
+
+        builder.Property(x => x.TenantId)
+            .IsRequired();
         
         builder
             .Property(x => x.Name)
@@ -50,5 +55,10 @@ internal sealed class WorkspaceConfiguration : IEntityTypeConfiguration<Workspac
         builder
             .Navigation(x => x.Memberships)
             .UsePropertyAccessMode(PropertyAccessMode.Field);
+    }
+
+    private static void ConfigureIndexes(EntityTypeBuilder<Workspace> builder)
+    {
+        builder.HasIndex(x => x.TenantId);
     }
 }

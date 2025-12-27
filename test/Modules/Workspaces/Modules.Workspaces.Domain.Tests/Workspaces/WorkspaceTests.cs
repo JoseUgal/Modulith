@@ -16,7 +16,7 @@ public sealed class WorkspaceTests
         var ownerId = Guid.NewGuid();
 
         // Act
-        Result<Workspace> result = Workspace.Create(name, ownerId);
+        Result<Workspace> result = Workspace.Create(Guid.NewGuid(), name, ownerId);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -36,7 +36,7 @@ public sealed class WorkspaceTests
         var ownerId = Guid.NewGuid();
 
         // Act
-        Workspace workspace = Workspace.Create(name, ownerId).Value;
+        Workspace workspace = Workspace.Create(Guid.NewGuid(), name, ownerId).Value;
 
         // Assert
         workspace.Memberships.Should().HaveCount(1);
@@ -50,7 +50,7 @@ public sealed class WorkspaceTests
         var ownerId = Guid.NewGuid();
 
         // Act
-        Workspace workspace = Workspace.Create(name, ownerId).Value;
+        Workspace workspace = Workspace.Create(Guid.NewGuid(), name, ownerId).Value;
         WorkspaceMembership membership = workspace.Memberships.Single();
 
         // Assert
@@ -69,8 +69,8 @@ public sealed class WorkspaceTests
         WorkspaceName name = WorkspaceName.Create("Same name").Value;
 
         // Act
-        Workspace w1 = Workspace.Create(name, Guid.NewGuid()).Value;
-        Workspace w2 = Workspace.Create(name, Guid.NewGuid()).Value;
+        Workspace w1 = Workspace.Create(Guid.NewGuid(), name, Guid.NewGuid()).Value;
+        Workspace w2 = Workspace.Create(Guid.NewGuid(), name, Guid.NewGuid()).Value;
 
         // Assert
         w1.Id.Should().NotBe(w2.Id);
