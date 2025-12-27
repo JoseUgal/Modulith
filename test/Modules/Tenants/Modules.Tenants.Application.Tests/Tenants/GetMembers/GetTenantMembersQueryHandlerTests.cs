@@ -19,13 +19,9 @@ public sealed class GetTenantMembersQueryHandlerTests
 
         GetTenantMembersQuery query = sut.ValidQuery();
 
-        sut.Repository.Setup(x =>
-            x.ExistsAsync(It.IsAny<TenantId>(), It.IsAny<CancellationToken>())
-        ).ReturnsAsync(false);
+        sut.SetupRepositoryExistsAsyncReturnsFalse();
 
-        sut.Repository.Setup(x =>
-            x.GetMembersAsync(It.IsAny<TenantId>(), It.IsAny<CancellationToken>())        
-        ).ReturnsAsync([]);
+        sut.SetupRepositoryReturnsEmptyMembers();
 
         // Act
         Result<TenantMemberResponse[]> result = await sut.Handler.Handle(query, CancellationToken.None);
@@ -34,10 +30,7 @@ public sealed class GetTenantMembersQueryHandlerTests
         result.IsFailure.Should().BeTrue();
         result.Error.Type.Should().Be(ErrorType.NotFound);
         
-        sut.Repository.Verify(x =>
-            x.GetWithMembershipsAsync(It.IsAny<TenantId>(), It.IsAny<CancellationToken>()),
-            Times.Never
-        );
+        sut.VerifyRepositoryGetMembersWasNotCalled();
     }
 
     [Fact]
@@ -53,13 +46,9 @@ public sealed class GetTenantMembersQueryHandlerTests
 
         var query = new GetTenantMembersQuery(tenant.Id.Value);
         
-        sut.Repository.Setup(x =>
-            x.ExistsAsync(It.IsAny<TenantId>(), It.IsAny<CancellationToken>())
-        ).ReturnsAsync(true);
+        sut.SetupRepositoryExistsAsyncReturnsTrue();
 
-        sut.Repository.Setup(x =>
-            x.GetMembersAsync(It.IsAny<TenantId>(), It.IsAny<CancellationToken>())        
-        ).ReturnsAsync(tenant.Memberships.ToArray());
+        sut.SetupRepositoryReturnsMembers(tenant.Memberships.ToArray());
         
         // Act
         Result<TenantMemberResponse[]> result = await sut.Handler.Handle(query, CancellationToken.None); 
@@ -73,5 +62,7 @@ public sealed class GetTenantMembersQueryHandlerTests
         result.Value.Select(x => x.Status).Should().Contain(
             [nameof(TenantMembershipStatus.Active).ToLowerInvariant()]
         );
+        
+        sut.VerifyRepositoryGetMembersWasCalled();
     }
 }

@@ -16,9 +16,7 @@ public sealed class GetTenantByIdQueryHandlerTests
         
         var query = new GetTenantByIdQuery(Guid.NewGuid());
 
-        sut.Sql.Setup(x =>
-            x.FirstOrDefaultAsync<TenantResponse>(It.IsAny<string>(), It.IsAny<object?>())
-        ).ReturnsAsync((TenantResponse?)null);
+        sut.SetupSqlReturnsNull();
 
         // Act
         Result<TenantResponse> result = await sut.Handler.Handle(query, CancellationToken.None);
@@ -26,6 +24,8 @@ public sealed class GetTenantByIdQueryHandlerTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error.Type.Should().Be(ErrorType.NotFound);
+        
+        sut.VerifySqlQueryWasCalled();
     }
 
     [Fact]
@@ -39,16 +39,9 @@ public sealed class GetTenantByIdQueryHandlerTests
            
          var query = new GetTenantByIdQuery(tenantId);
 
-         var response = new TenantResponse
-         {
-             Id = tenantId,
-             Name = "Acme",
-             Slug = "acme"
-         };
+         TenantResponse response = sut.ValidResponse(tenantId);
 
-         sut.Sql.Setup(x =>
-             x.FirstOrDefaultAsync<TenantResponse>(It.IsAny<string>(), It.IsAny<object?>())
-         ).ReturnsAsync(response);
+         sut.SetupSqlReturnsTenant(response);
 
          // Act
          Result<TenantResponse> result = await sut.Handler.Handle(query, CancellationToken.None);
@@ -58,5 +51,7 @@ public sealed class GetTenantByIdQueryHandlerTests
          result.Value.Id.Should().Be(tenantId);
          result.Value.Name.Should().Be(response.Name);
          result.Value.Slug.Should().Be(response.Slug);
+
+         sut.VerifySqlQueryWasCalled();
     }
 }

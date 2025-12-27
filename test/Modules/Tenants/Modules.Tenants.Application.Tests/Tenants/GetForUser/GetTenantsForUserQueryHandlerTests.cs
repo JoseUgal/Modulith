@@ -12,11 +12,10 @@ public sealed class GetTenantsForUserQueryHandlerTests
     {
         // Arrange
         var sut = new GetTenantsForUserQueryHandlerSut();
+        
         var query = new GetTenantsForUserQuery(Guid.NewGuid());
 
-        sut.Sql.Setup(x =>
-            x.QueryAsync<TenantResponse>(It.IsAny<string>(), It.IsAny<object?>())
-        ).ReturnsAsync([]);
+        sut.SetupSqlReturnsEmptyArray();
 
         // Act
         Result<TenantResponse[]> result = await sut.Handler.Handle(query, CancellationToken.None);
@@ -25,6 +24,8 @@ public sealed class GetTenantsForUserQueryHandlerTests
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeNull();
         result.Value.Should().BeEmpty();
+        
+        sut.VerifySqlQueryWasCalled();
     }
 
     [Fact]
@@ -37,13 +38,11 @@ public sealed class GetTenantsForUserQueryHandlerTests
         
         TenantResponse[] responses =
         [
-            new() { Id = Guid.NewGuid(), Name = "Acme", Slug = "acme" },
-            new() { Id = Guid.NewGuid(), Name = "Contoso", Slug = "contoso" }
+            sut.ValidResponse("Acme", "acme"),
+            sut.ValidResponse("Contoso", "contoso")
         ];
 
-        sut.Sql.Setup(x =>
-            x.QueryAsync<TenantResponse>(It.IsAny<string>(), It.IsAny<object?>())
-        ).ReturnsAsync(responses);
+        sut.SetupSqlReturnsTenants(responses);
 
         // Act
         Result<TenantResponse[]> result = await sut.Handler.Handle(query, CancellationToken.None);
@@ -52,5 +51,7 @@ public sealed class GetTenantsForUserQueryHandlerTests
         result.IsSuccess.Should().BeTrue();
         result.Value.Length.Should().Be(responses.Length);
         result.Value.Select(x => x.Name).Should().Contain(["Acme", "Contoso"]);
+        
+        sut.VerifySqlQueryWasCalled();
     }
 }
