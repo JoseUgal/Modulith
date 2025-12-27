@@ -11,4 +11,10 @@
       <ProjectReference Include="..\Modules.Tenants.Domain\Modules.Tenants.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>Modules.Tenants.Application.Tests</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
 </Project>

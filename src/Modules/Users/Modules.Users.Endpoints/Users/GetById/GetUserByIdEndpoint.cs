@@ -11,7 +11,7 @@ namespace Modules.Users.Endpoints.Users.GetById;
 
 public sealed class GetUserByIdEndpoint(ISender sender) : Endpoint
 {
-    [HttpGet(UserRoutes.GetById, Name = nameof(Users.GetById))]
+    [HttpGet(UserRoutes.GetById, Name = nameof(GetUserByIdEndpoint))]
     [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerOperation(

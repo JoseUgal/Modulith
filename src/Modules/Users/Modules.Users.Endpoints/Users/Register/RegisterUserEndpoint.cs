@@ -27,9 +27,9 @@ public sealed class RegisterUserEndpoint(ISender sender) : Endpoint
     )
     {
         var command = new RegisterUserCommand(
+            request.Email,
             request.FirstName,
             request.LastName,
-            request.Email,
             request.Password
         );
         

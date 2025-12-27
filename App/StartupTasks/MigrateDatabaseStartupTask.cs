@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Modules.Tenants.Persistence;
 using Modules.Users.Persistence;
 
 namespace App.StartupTasks;
@@ -23,6 +24,8 @@ internal sealed class MigrateDatabaseStartupTask(
         using IServiceScope scope = serviceProvider.CreateScope();
 
         await MigrateDatabaseAsync<UsersDbContext>(scope, stoppingToken);
+        
+        await MigrateDatabaseAsync<TenantsDbContext>(scope, stoppingToken);
     }
 
     private static async Task MigrateDatabaseAsync<TDbContext>(IServiceScope scope, CancellationToken cancellationToken) where TDbContext : DbContext
