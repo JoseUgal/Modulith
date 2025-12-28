@@ -3,7 +3,7 @@ using Modules.Workspaces.Domain;
 using Modules.Workspaces.Domain.Workspaces;
 using Moq;
 
-namespace Modules.Workspaces.Application.Tests.Workspaces;
+namespace Modules.Workspaces.Application.Tests.Workspaces.AcceptInvitation;
 
 internal sealed class AcceptWorkspaceInvitationCommandHandlerSut
 {

@@ -13,6 +13,14 @@ public interface IWorkspaceRepository
     void Add(Workspace workspace);
     
     /// <summary>
+    /// Checks if the specified workspace exists.
+    /// </summary>
+    /// <param name="workspaceId">The workspace identifier.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>Returns true if the workspace exists; otherwise, false.</returns>
+    Task<bool> ExistsAsync(WorkspaceId workspaceId, CancellationToken cancellationToken = default);
+    
+    /// <summary>
     /// Gets the workspace with the specified identifier.
     /// </summary>
     /// <param name="workspaceId">The workspace identifier.</param>

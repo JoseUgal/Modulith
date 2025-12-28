@@ -14,11 +14,20 @@ public sealed class WorkspaceRepository(WorkspacesDbContext dbContext) : IWorksp
     public void Add(Workspace workspace) => dbContext.Set<Workspace>().Add(workspace);
 
     /// <inheritdoc />
+    public async Task<bool> ExistsAsync(WorkspaceId workspaceId, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.Set<Workspace>().AnyAsync(workspace => 
+            workspace.Id == workspaceId, 
+            cancellationToken
+        );
+    }
+
+    /// <inheritdoc />
     public async Task<Workspace?> GetWithMembershipsAsync(WorkspaceId workspaceId, CancellationToken cancellationToken = default)
     {
         return await dbContext.Set<Workspace>()
             .Include(workspace => workspace.Memberships)
-            .FirstOrDefaultAsync(workspace => 
+            .SingleOrDefaultAsync(workspace => 
                 workspace.Id == workspaceId, 
                 cancellationToken
             );
